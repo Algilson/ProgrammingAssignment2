@@ -3,13 +3,43 @@
 
 ## Write a short comment describing this function
 
+## CacheMatrix creates and returns a list of functions
+## used by cacheSolve to get or set the inverted matrix in cache
+
 makeCacheMatrix <- function(x = matrix()) {
+cachedInverse <- NULL
+set <- function(y) {
+x <<- y
+cachedInverse <<- NULL
+     }
+     get <- function() x
+    setInverse <- function(inverse) cachedInverse <<- inverse
+     getInverse <- function() cachedInverse
+     list(set = set, get = get,
+         setInverse = setInverse,
+         getInverse = getInverse)
 
-}
+ }
+ 
 
-
-## Write a short comment describing this function
+## Write a short comment describing this function cachesolve
+## cacheSolve calcluates the inverse of the matrix created in makeCacheMatrix
+## If the inverted matrix does not exist in cache,
+## it it created in the working environment and it's inverted value
+## is stored in cache
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
+## Return a matrix that is the inverse of 'x'
+invFunc <- x$getInverse()
+     if(!is.null(invFunc)) {
+        message("getting cached data")
+        return(invFunc)
+    }
+   data <- x$get()
+    invFunc <- solve(data, ...)
+    x$setInverse(invFunc)
+    invFunc
+ }
+
+# R data files from past sessions
+.Rdata
